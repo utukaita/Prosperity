@@ -22,6 +22,7 @@ def get_max_profit(trade_count, base, target, memo=None):
     max_profit = 0
     max_trade = []
     for i in range(MATRIX_SIZE):
+        if i == base or i == target:
             if (trade_count - 1, i, target) in memo:
                 recursive_max_profit, recursive_max_trade = memo[(trade_count - 1, i, target)]
             else:

@@ -1,36 +1,45 @@
 from datamodel import Listing, OrderDepth, Trade, TradingState
-import trader
+import trader3
 from typing import Dict
 timestamp = 1100
 
 listings = {
-	"PRODUCT1": Listing(
-		symbol="PRODUCT1",
-		product="PRODUCT1",
+	"RAINFOREST_RESIN": Listing(
+		symbol="RAINFOREST_RESIN",
+		product="RAINFOREST_RESIN",
 		denomination= "SEASHELLS"
 	),
-	"PRODUCT2": Listing(
-		symbol="PRODUCT2",
-		product="PRODUCT2",
+	"KELP": Listing(
+		symbol="KELP",
+		product="KELP",
+		denomination= "SEASHELLS"
+	),
+	"SQUID_INK": Listing(
+		symbol="SQUID_INK",
+		product="SQUID_INK",
 		denomination= "SEASHELLS"
 	),
 }
 
 order_depths = {
-	"PRODUCT1": OrderDepth(
+	"RAINFOREST_RESIN": OrderDepth(
 		buy_orders={10: 7, 9: 5},
 		sell_orders={12: -5, 13: -3}
 	),
-	"PRODUCT2": OrderDepth(
+	"SQUID_INK": OrderDepth(
 		buy_orders={142: 3, 141: 5},
 		sell_orders={144: -5, 145: -8}
+	),
+	"KELP": OrderDepth(
+		buy_orders={80: 3, 82: 5},
+		sell_orders={84: -5, 86: -8}
 	),
 }
 
 own_trades = {
-	"PRODUCT1": [
+	"RAINFOREST_RESIN": [
 		Trade(
-			symbol="PRODUCT1",
+			symbol="RAINFOREST_RESIN",
 			price=11,
 			quantity=4,
 			buyer="SUBMISSION",
@@ -38,7 +47,7 @@ own_trades = {
 			timestamp=1000
 		),
 		Trade(
-			symbol="PRODUCT1",
+			symbol="RAINFOREST_RESIN",
 			price=12,
 			quantity=3,
 			buyer="SUBMISSION",
@@ -46,26 +55,38 @@ own_trades = {
 			timestamp=1000
 		)
 	],
-	"PRODUCT2": [
+	"SQUID_INK": [
 		Trade(
-			symbol="PRODUCT2",
+			symbol="SQUID_INK",
 			price=143,
 			quantity=2,
 			buyer="",
 			seller="SUBMISSION",
 			timestamp=1000
 		),
+	],
+	"KELP": [
+		Trade(
+			symbol="KELP",
+			price=80,
+			quantity=3,
+			buyer="SUBMISSION",
+				seller="",
+			timestamp=1000
+		),
 	]
 }
 
 market_trades = {
-	"PRODUCT1": [],
-	"PRODUCT2": []
+	"RAINFOREST_RESIN": [],
+	"SQUID_INK": [],
+	"KELP": []
 }
 
 position = {
-	"PRODUCT1": 10,
-	"PRODUCT2": -7
+	"RAINFOREST_RESIN": 10,
+	"SQUID_INK": -7,
+	"KELP": 0
 }
 
 observations = {}
@@ -81,13 +102,16 @@ state = TradingState(
 	position,
 	observations
 )
-trader = trader.Trader()
-iterations = 3
+trader = trader3.Trader()
+iterations = 100
 for i in range(iterations):
   state.timestamp = i
-  state.order_depths["PRODUCT1"].buy_orders[10] = i
-  state.order_depths["PRODUCT1"].sell_orders[12] = -i
-  state.order_depths["PRODUCT2"].buy_orders[142] = i
-  state.order_depths["PRODUCT2"].sell_orders[144] = -i
+  state.order_depths["RAINFOREST_RESIN"].buy_orders[10] = i
+  state.order_depths["RAINFOREST_RESIN"].sell_orders[12] = -i
+  state.order_depths["SQUID_INK"].buy_orders[142] = i
+  state.order_depths["SQUID_INK"].sell_orders[144] = -i
+  state.order_depths["KELP"].buy_orders[81] = i
+  state.order_depths["KELP"].sell_orders[83] = -i
+  print(state.position)
   trader.run(state)
   print("--------------------------------------------------")
